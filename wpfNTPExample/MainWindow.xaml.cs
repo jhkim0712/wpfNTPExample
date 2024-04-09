@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using wpfNTPExample.Class;
 
 namespace wpfNTPExample
@@ -26,15 +27,26 @@ namespace wpfNTPExample
             InitializeComponent();
             InitializeUI();
         }
+        
+        private DispatcherTimer timer = new DispatcherTimer();
 
         public void InitializeUI()
         {
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += Timer_Tick;
+            timer.Start();
+
+
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+
             DateTime dtSystemTime = DateTime.Now;
             DateTime dtServerTime = NTPClient.GetNetworkTime();
 
             tbSystemTime.Text = dtSystemTime.ToString();
             tbServerTime.Text = dtServerTime.ToString();
-
         }
     }
 }
